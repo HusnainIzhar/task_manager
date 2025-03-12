@@ -58,7 +58,7 @@ export function TaskTable() {
   );
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTaskStatus] = useUpdateTaskMutation();
-  const { data: tasks, isLoading, error } = useGetTasksQuery({});
+  const { data: tasks } = useGetTasksQuery({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});

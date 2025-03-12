@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-require("dotenv").config();
 
 const API_URL = process.env.API_URL;
 export const userApi = createApi({
@@ -21,7 +20,7 @@ export const userApi = createApi({
       }),
     }),
     logout: builder.mutation({
-      query: (body = {}) => ({
+      query: () => ({
         url: "/auth/logout",
         method: "GET",
       }),
@@ -29,6 +28,7 @@ export const userApi = createApi({
     getUser: builder.query({
       query: () => "/auth/user",
     }),
+    
   }),
 });
 

@@ -1,5 +1,5 @@
+import { Tasks } from "@/components/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-require('dotenv').config();
 
 const API_URL = process.env.API_URL;
 
@@ -10,11 +10,11 @@ export const taskApi = createApi({
   endpoints: (builder) => ({
     getTasks: builder.query({
       query: () => "/tasks/getAll",
-      transformResponse: (response: { tasks: any[] }) => {
+      transformResponse: (response: { tasks : Tasks[] }) => {
       
         return response.tasks.map(task => ({
-          id: task._id, 
-          task: task.title,
+          id: task.id, 
+          task: task.task,
           description: task.description,
           status: task.status
         }));

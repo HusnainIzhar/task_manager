@@ -62,7 +62,8 @@ export const TaskCard: React.FC<Props> = ({
       toast.success("Task created successfully");
     
       onAdd();
-    } catch (error) {
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to create task");
     }
   };

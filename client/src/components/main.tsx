@@ -11,7 +11,7 @@ const Main = () => {
 
   const handleLogout = async () => {
     try {
-      const result = await logout({}).unwrap();
+      await logout({}).unwrap();
       
       toast.success("Logged out successfully");
       router.push("/");
