@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+require('dotenv').config();
+
+const API_URL = process.env.API_URL;
 
 export const taskApi = createApi({
   reducerPath: "taskApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api", credentials: "include" }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL, credentials: "include" }),
   tagTypes: ['Task'],
   endpoints: (builder) => ({
     getTasks: builder.query({
