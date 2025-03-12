@@ -11,26 +11,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendToken = exports.refreshTokenOptions = exports.accessTokenOptions = void 0;
 require("dotenv").config();
-const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || "5", 10); // In minutes
-const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || "30", 10); // In days
+// Parse environment variables
+const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || "5", 10);
+const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || "3", 10);
+// Check environment
 const isDevelopment = process.env.NODE_ENV === "development";
+// Options for token
 exports.accessTokenOptions = {
-    expires: new Date(Date.now() + accessTokenExpire * 60 * 1000), // minutes
-    maxAge: accessTokenExpire * 60 * 1000,
+    expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 60 * 1000),
+    maxAge: accessTokenExpire * 60 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: isDevelopment ? "lax" : "none",
-    secure: !isDevelopment,
+    sameSite: "lax",
+    secure: false, // Only use secure in production
 };
+// Options for refresh token
 exports.refreshTokenOptions = {
-    expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000), // days
+    expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
     maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: isDevelopment ? "lax" : "none",
-    secure: !isDevelopment,
+    sameSite: "lax",
+    secure: false, // Only use secure in production
 };
 const sendToken = (user, statusCode, res) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = user.signAccessToken();
     const refreshToken = user.signRefreshToken();
+    // Cookie options
     res.cookie("access_token", accessToken, exports.accessTokenOptions);
     res.cookie("refresh_token", refreshToken, exports.refreshTokenOptions);
     res.status(statusCode).json({

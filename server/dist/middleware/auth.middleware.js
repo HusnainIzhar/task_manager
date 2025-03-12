@@ -18,30 +18,12 @@ const errorHandler_utils_1 = __importDefault(require("../utils/errorHandler.util
 const user_model_1 = require("../models/user.model");
 // authenticated user
 const isAuthenticated = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // Skip authentication if this is a build process or test environment
-    if (process.env.NODE_ENV === 'build' || process.env.SKIP_AUTH === 'true') {
-        console.log('Authentication bypassed for build/test environment');
-        // Create a minimal mock user to avoid errors downstream
-        req.user = {
-            _id: 'build-process-mock-id',
-            name: 'Build Process',
-            email: 'build@example.com',
-        };
-        return next();
-    }
     const accessToken = req.cookies.access_token;
-    // Also check for Authorization header as a fallback
-    const authHeader = req.headers.authorization;
-    const tokenFromHeader = authHeader && authHeader.startsWith('Bearer ')
-        ? authHeader.substring(7)
-        : null;
-    // Use token from cookie or header
-    const token = accessToken || tokenFromHeader;
-    if (!token) {
+    if (!accessToken) {
         return next(new errorHandler_utils_1.default("No access token provided", 401));
     }
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decoded = jsonwebtoken_1.default.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         if (!decoded) {
             return next(new errorHandler_utils_1.default("Access Token is not valid", 401));
         }
