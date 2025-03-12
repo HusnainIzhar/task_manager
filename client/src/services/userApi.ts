@@ -11,9 +11,13 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ 
     baseUrl: API_URL, 
     credentials: "include",
-    prepareHeaders: (headers) => {
+    prepareHeaders: (headers, { getState }) => {
       // Add any custom headers needed for CORS
       headers.set('Content-Type', 'application/json');
+      
+      // Log the request URL for debugging
+      console.log('Making auth API request with URL:', API_URL);
+      
       return headers;
     },
   }),
@@ -26,11 +30,14 @@ export const userApi = createApi({
       }),
     }),
     login: builder.mutation({
-      query: (body) => ({
-        url: "/auth/login",
-        method: "POST",
-        body,
-      }),
+      query: (body) => {
+        console.log('Logging in with URL:', `${API_URL}/auth/login`);
+        return {
+          url: "/auth/login",
+          method: "POST",
+          body,
+        };
+      },
     }),
     logout: builder.mutation({
       query: () => ({
@@ -41,7 +48,6 @@ export const userApi = createApi({
     getUser: builder.query({
       query: () => "/auth/user",
     }),
-    
   }),
 });
 

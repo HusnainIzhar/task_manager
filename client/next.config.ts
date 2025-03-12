@@ -6,10 +6,20 @@ const nextConfig: NextConfig = {
     // Debug log to check what API_URL is actually being used
     console.log('Next.js config - API_URL:', process.env.API_URL);
     
+    // Make sure API URL matches protocol of client
+    const apiUrl = process.env.API_URL || 'http://localhost:9000/api';
+    
+    // Log the actual URL that will be used for the rewrite
+    const destinationUrl = apiUrl.endsWith('/api') 
+      ? `${apiUrl.slice(0, -4)}/:path*` 
+      : `${apiUrl}/:path*`;
+    
+    console.log('Rewriting requests to:', destinationUrl);
+    
     return [
       {
         source: '/api/:path*',
-        destination: process.env.API_URL ? `${process.env.API_URL.replace(/\/api$/, '')}/:path*` : 'http://localhost:9000/api/:path*',
+        destination: destinationUrl,
       },
     ];
   },

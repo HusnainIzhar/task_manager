@@ -6,7 +6,7 @@ import userRouter from "./routes/user.route";
 import taskRouter from "./routes/task.route";
 require("dotenv").config();
 
-const CLIENT_URL = process.env.CLIENT_BASE_URL || "http://localhost:3000";
+const CLIENT_URL = process.env.CLIENT_BASE_URL || "https://task-manager-black-ten.vercel.app/";
 console.log("Using CLIENT_URL for CORS:", CLIENT_URL);
 
 //Middlewares
