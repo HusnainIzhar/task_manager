@@ -4,12 +4,19 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define the API URL with proper error handling for production
 const API_URL = process.env.API_URL || 'http://localhost:9000/api';
 
+// Debug log to identify what URL is being used
+console.log('taskApi.ts - Using API URL:', API_URL);
 
 export const taskApi = createApi({
   reducerPath: "taskApi",
   baseQuery: fetchBaseQuery({ 
     baseUrl: API_URL,
     credentials: "include",
+    prepareHeaders: (headers) => {
+      // Add any custom headers needed for CORS
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
   }),
   tagTypes: ['Task'],
   endpoints: (builder) => ({

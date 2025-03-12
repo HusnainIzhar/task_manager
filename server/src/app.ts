@@ -6,16 +6,27 @@ import userRouter from "./routes/user.route";
 import taskRouter from "./routes/task.route";
 require("dotenv").config();
 
+const CLIENT_URL = process.env.CLIENT_BASE_URL || "http://localhost:3000";
+console.log("Using CLIENT_URL for CORS:", CLIENT_URL);
+
 //Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "*",
+    origin: CLIENT_URL,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+
+// Debug middleware to log request details
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+  next();
+});
 
 //Routes
 app.get("/", (req: Request, res: Response) => {
