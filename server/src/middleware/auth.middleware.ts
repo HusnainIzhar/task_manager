@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import ErrorHandler from "../utils/errorHandler.utils";
-import { IUser } from "../models/user.model";
+import { IUser, User } from "../models/user.model";
 
 // Define AuthRequest interface
 interface AuthRequest extends Request {
-  user?: any; // Using 'any' for now to match whatever type is coming from the JWT
+  user?: IUser; // Using proper IUser type to match the controller
 }
 
 // authenticated user
@@ -16,7 +16,7 @@ export const isAuthenticated = async (
 ) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
-    return;
+    return next(new ErrorHandler("No access token provided", 401));
   }
   try {
     const decoded = jwt.verify(
@@ -26,8 +26,21 @@ export const isAuthenticated = async (
     if (!decoded) {
       return next(new ErrorHandler("Access Token is not valid", 401));
     }
-    const user = decoded.user;
+    
+    // Extract the user ID from the token
+    const userId = decoded.id;
+    
+    if (!userId) {
+      return next(new ErrorHandler("Invalid token format", 401));
+    }
+    
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
 
+    // Set the user in the request object
     req.user = user;
 
     console.log(

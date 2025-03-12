@@ -10,7 +10,7 @@ import { isAuthenticated } from "../middleware/auth.middleware";
 
 taskRouter.post("/create", isAuthenticated, createTask);
 taskRouter.post("/update/:id", isAuthenticated, updateTask);
-taskRouter.get("/get", isAuthenticated, getTasks);
+taskRouter.get("/getAll", isAuthenticated, getTasks);
 taskRouter.delete("/delete/:id", isAuthenticated, deleteTask);
 
 export default taskRouter;

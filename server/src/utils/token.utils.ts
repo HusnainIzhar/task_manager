@@ -10,29 +10,25 @@ interface ITokenOptions {
   secure?: boolean;
 }
 
-// Parse environment variables
-const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || "5", 10);
-const refreshTokenExpire = parseInt(
-  process.env.REFRESH_TOKEN_EXPIRE || "3",
-  10
-);
+const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || "5", 10); // In minutes
+const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || "30", 10); // In days
 
-// Options for token
+const isDevelopment = process.env.NODE_ENV === "development";
+
 export const accessTokenOptions: ITokenOptions = {
-  expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 60 * 1000),
-  maxAge: accessTokenExpire * 60 * 60 * 60 * 1000,
+  expires: new Date(Date.now() + accessTokenExpire * 60 * 1000), // minutes
+  maxAge: accessTokenExpire * 60 * 1000,
   httpOnly: true,
-  sameSite: "none",
-  secure: true,
+  sameSite: isDevelopment ? "lax" : "none",
+  secure: !isDevelopment,
 };
 
-// Options for refresh token
 export const refreshTokenOptions: ITokenOptions = {
-  expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
+  expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000), // days
   maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  sameSite: "none",
-  secure: true,
+  sameSite: isDevelopment ? "lax" : "none",
+  secure: !isDevelopment,
 };
 
 export const sendToken = async (
@@ -43,7 +39,6 @@ export const sendToken = async (
   const accessToken = user.signAccessToken();
   const refreshToken = user.signRefreshToken();
 
-  // Cookie options
   res.cookie("access_token", accessToken, accessTokenOptions);
   res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 

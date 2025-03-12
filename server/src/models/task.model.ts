@@ -20,8 +20,8 @@ export const taskSchema = new Schema<ITask>(
     },
     status: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      enum: ["pending", "completed"],
+      default: "pending",
     },
     user: {
       type: mongoose.Types.ObjectId,

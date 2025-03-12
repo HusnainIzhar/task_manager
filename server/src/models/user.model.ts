@@ -63,7 +63,7 @@ userSchema.methods.signAccessToken = function (): string {
 //sign refresh token
 userSchema.methods.signRefreshToken = function (): string {
   return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET || "", {
-    expiresIn: "3d",
+    expiresIn: "30d",
   });
 };
 
