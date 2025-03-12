@@ -1,7 +1,9 @@
 import { Tasks } from "@/components/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_URL = process.env.API_URL;
+// Properly access the environment variable with a fallback
+const API_URL = process.env.API_URL || 'http://localhost:9000/api';
+
 
 export const taskApi = createApi({
   reducerPath: "taskApi",

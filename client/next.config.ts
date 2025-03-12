@@ -6,11 +6,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: process.env.NODE_ENV === 'production' 
-          ? 'https://your-production-server.com/api/:path*'  // Update with actual production URL
-          : 'http://localhost:9000/api/:path*',  // Development server URL with correct port
+        destination: process.env.API_URL || 'http://localhost:9000/api/:path*',
       },
     ];
+  },
+  
+  env: {
+    API_URL: process.env.API_URL,
   },
 };
 
