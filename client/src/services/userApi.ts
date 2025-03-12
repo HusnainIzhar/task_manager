@@ -1,21 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Use the same API URL configuration as taskApi
-const API_URL = process.env.API_URL || 'http://localhost:5000/api';
-
-// Debug log to identify what URL is being used
-console.log('userApi.ts - Using API URL for auth:', API_URL);
+const API_URL = process.env.API_URL || 'http://localhost:9000/api';
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ 
     baseUrl: API_URL, 
     credentials: "include",
-    // Log requests to help debug API connection issues
-    prepareHeaders: (headers, { getState }) => {
-      console.log(`Making auth API request to ${API_URL}`);
-      return headers;
-    },
   }),
   endpoints: (builder) => ({
     register: builder.mutation({

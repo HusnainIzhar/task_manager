@@ -2,21 +2,14 @@ import { Tasks } from "@/components/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define the API URL with proper error handling for production
-const API_URL = process.env.API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.API_URL || 'http://localhost:9000/api';
 
-// Debug log to identify what URL is being used
-console.log('taskApi.ts - Using API URL:', API_URL);
 
 export const taskApi = createApi({
   reducerPath: "taskApi",
   baseQuery: fetchBaseQuery({ 
     baseUrl: API_URL,
     credentials: "include",
-    // Log requests to help debug API connection issues
-    prepareHeaders: (headers, { getState }) => {
-      console.log(`Making API request to ${API_URL}`);
-      return headers;
-    },
   }),
   tagTypes: ['Task'],
   endpoints: (builder) => ({
