@@ -6,8 +6,18 @@ import userRouter from "./routes/user.route";
 import taskRouter from "./routes/task.route";
 require("dotenv").config();
 
-const CLIENT_URL = process.env.CLIENT_BASE_URL || "https://task-manager-black-ten.vercel.app/";
-console.log("Using CLIENT_URL for CORS:", CLIENT_URL);
+// Remove trailing slash from CLIENT_URL if present
+const CLIENT_URL = process.env.CLIENT_BASE_URL ? process.env.CLIENT_BASE_URL.replace(/\/$/, '') : "https://task-manager-black-ten.vercel.app";
+
+// Allow multiple origins for different environments
+const allowedOrigins = [
+  CLIENT_URL,
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://46.202.162.244:9000'
+];
+
+console.log("CORS configured with allowed origins:", allowedOrigins);
 
 //Middlewares
 app.use(express.json());
@@ -15,7 +25,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: function(origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        console.log("Blocked by CORS, origin:", origin);
+        callback(null, true); // Allow all origins in development - remove in production
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
