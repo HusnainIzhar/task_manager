@@ -2,7 +2,7 @@ import { Tasks } from "@/components/tasks";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define the API URL with proper error handling for production
-const API_URL = process.env.API_URL || 'http://localhost:9000/api';
+const API_URL = process.env.API_URL || 'https://task-nine-iota.vercel.app/api';
 
 // Debug log to identify what URL is being used
 console.log('taskApi.ts - Using API URL:', API_URL);

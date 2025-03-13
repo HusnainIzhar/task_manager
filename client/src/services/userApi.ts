@@ -1,25 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Use the same API URL configuration as taskApi
-const API_URL = process.env.API_URL || 'http://localhost:9000/api';
-
-// Debug log to identify what URL is being used
-console.log('userApi.ts - Using API URL for auth:', API_URL);
+const API_URL = process.env.API_URL || 'https://task-nine-iota.vercel.app/api';
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ 
     baseUrl: API_URL, 
     credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-      // Add any custom headers needed for CORS
-      headers.set('Content-Type', 'application/json');
-      
-      // Log the request URL for debugging
-      console.log('Making auth API request with URL:', API_URL);
-      
-      return headers;
-    },
   }),
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -30,14 +18,11 @@ export const userApi = createApi({
       }),
     }),
     login: builder.mutation({
-      query: (body) => {
-        console.log('Logging in with URL:', `${API_URL}/auth/login`);
-        return {
-          url: "/auth/login",
-          method: "POST",
-          body,
-        };
-      },
+      query: (body) => ({
+        url: "/auth/login",
+        method: "POST",
+        body,
+      }),
     }),
     logout: builder.mutation({
       query: () => ({
@@ -48,6 +33,7 @@ export const userApi = createApi({
     getUser: builder.query({
       query: () => "/auth/user",
     }),
+    
   }),
 });
 
