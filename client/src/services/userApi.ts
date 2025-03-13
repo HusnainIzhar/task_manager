@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Use the same API URL configuration as taskApi
-const API_URL = process.env.API_URL || 'https://task-nine-iota.vercel.app/api';
+const API_URL = 'https://task-nine-iota.vercel.app/api';
 
 export const userApi = createApi({
   reducerPath: "userApi",
