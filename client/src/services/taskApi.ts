@@ -4,6 +4,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define the API URL with proper error handling for production
 const API_URL = "http://46.202.162.244:9000/api";
 
+// Define interface for task response from server
+interface ServerTask {
+  id?: string;
+  _id?: string;
+  title?: string;
+  task?: string;
+  description: string;
+  status: "pending" | "completed";
+}
+
 // Debug log to identify what URL is being used
 console.log('taskApi.ts - Using API URL:', API_URL)
 
@@ -22,11 +32,11 @@ export const taskApi = createApi({
   endpoints: (builder) => ({
     getTasks: builder.query({
       query: () => "/tasks/getAll",
-      transformResponse: (response: { tasks : Tasks[] }) => {
+      transformResponse: (response: { tasks: ServerTask[] }) => {
       
         return response.tasks.map(task => ({
-          id: task.id, 
-          task: task.task,
+          id: task.id || task._id || "", 
+          task: task.task || task.title || "",
           description: task.description,
           status: task.status
         }));
