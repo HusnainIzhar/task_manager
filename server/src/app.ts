@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(
   cors(
     {
-      origin: "https://task-manager-black-ten.vercel.app",
+      origin: "http://46.202.162.244:5000",
       credentials: true,
     }
   )
