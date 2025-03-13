@@ -57,7 +57,7 @@ export function TaskTable() {
     []
   );
   const [deleteTask] = useDeleteTaskMutation();
-  const [updateTaskStatus] = useUpdateTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
   const { data: tasks } = useGetTasksQuery({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -110,7 +110,7 @@ export function TaskTable() {
         taskId: task.id,
       });
 
-      await updateTaskStatus({
+      await updateTask({
         id: task.id,
         title: task.task,
         description: task.description,
