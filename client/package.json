@@ -23,7 +23,7 @@
     "lucide-react": "^0.479.0",
     "mini-svg-data-uri": "^1.4.4",
     "motion": "^12.5.0",
-    "next": "15.2.2",
+    "next": "15.2.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
